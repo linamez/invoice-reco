@@ -1,7 +1,7 @@
 # invoice-reco
 intro to FastAPI with a toy example of invoice recognition
 
-# Notes
+## Notes
 
 * .env file with OPENAI_API_KEY
 

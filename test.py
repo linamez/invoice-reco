@@ -34,7 +34,7 @@ def test_invoice_reco(test_client: TestClient, test_invoice: bytes):
     assert response.status_code == 200
     invoice_info = response.json()
     assert invoice_info["invoice_number"] == "FRINV2400001423431"
-    assert invoice_info["order_date"] == "2024-01-06T00:00:00"
+    assert invoice_info["order_date"] == "2024-01-06"
     assert invoice_info["vat_rate"] == 0.2
     assert invoice_info["total_excl_vat"] == 53.24
     assert invoice_info["total_incl_vat"] == 63.89

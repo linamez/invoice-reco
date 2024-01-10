@@ -1,29 +1,23 @@
 import logging
 import datetime as dt
 from fastapi import APIRouter, UploadFile
-from pydantic import BaseModel, Field
-from typing import Annotated
 from src import openai
+from src.models import InvoiceInfo
+from src.db import create_db_and_tables, add_invoice_info
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-
 router = APIRouter()
+
+create_db_and_tables()
 
 
 @router.post("/uploadfile/")
-async def upload_file(file: UploadFile):
+async def upload_file(file: UploadFile) -> dict:
     logger.info(f"Received file: {file.filename}")
     return {"filename": file.filename}
-
-
-class InvoiceInfo(BaseModel):
-    invoice_number: Annotated[str, Field(min_length=1, max_length=255)]
-    order_date: dt.date
-    vat_rate: Annotated[float, Field(ge=0.0, le=1.0)]
-    total_excl_vat: Annotated[float, Field(ge=0.0)]
-    total_incl_vat: Annotated[float, Field(ge=0.0)]
 
 
 @router.post("/invoice/reco/")
@@ -46,10 +40,14 @@ def invoice_reco(file: UploadFile) -> InvoiceInfo:
     if order_date > dt.datetime.now():
         raise ValueError("The order date cannot be later than today.")
 
-    return InvoiceInfo(
+    invoice_info = InvoiceInfo(
         invoice_number=data.get("invoice_number", ""),
-        order_date=data.get("order_date", ""),
+        order_date=order_date,
         vat_rate=data.get("vat_rate", 0.0),
         total_excl_vat=data.get("total_excl_vat", 0.0),
         total_incl_vat=data.get("total_incl_vat", 0.0),
     )
+
+    # add invoice info to database
+    add_invoice_info(invoice_info)
+    return invoice_info

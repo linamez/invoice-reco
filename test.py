@@ -1,7 +1,6 @@
 import pytest
 from src import app
 from fastapi.testclient import TestClient
-from src.main import InvoiceInfo
 
 
 @pytest.fixture

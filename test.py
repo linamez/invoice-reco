@@ -1,6 +1,6 @@
 import pytest
-from src import app
 from fastapi.testclient import TestClient
+from src import app
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ def test_create_file(test_client: TestClient, test_invoice: bytes):
 
 def test_invoice_reco(test_client: TestClient, test_invoice: bytes):
     response = test_client.post(
-        "/invoice/reco/", files={"file": ("test_invoice.pdf", test_invoice)}
+        "/invoice-reco/", files={"file": ("test_invoice.pdf", test_invoice)}
     )
     assert response.status_code == 200
     invoice_info = response.json()

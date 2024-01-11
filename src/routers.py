@@ -20,10 +20,9 @@ async def upload_file(file: UploadFile) -> dict:
     return {"filename": file.filename}
 
 
-@router.post("/invoice/reco/")
-def invoice_reco(file: UploadFile) -> InvoiceInfo:
+@router.post("/invoice-reco/")
+async def invoice_reco(file: UploadFile) -> InvoiceInfo:
     prompt = """This image is an invoice. Extract the required information to fill the following JSON object:
-    
     {
         invoice_number: string,
         order_date: datetime.date,
@@ -50,4 +49,5 @@ def invoice_reco(file: UploadFile) -> InvoiceInfo:
 
     # add invoice info to database
     add_invoice_info(invoice_info)
+
     return invoice_info

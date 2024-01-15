@@ -48,6 +48,6 @@ async def invoice_reco(file: UploadFile) -> InvoiceInfo:
     )
 
     # add invoice info to database
-    add_invoice_info(invoice_info)
+    # add_invoice_info(invoice_info)
 
     return invoice_info

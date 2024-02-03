@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Session, create_engine
-from src.models import InvoiceInfo
+from .models import InvoiceInfo
 
 
 sqlite_file_name = "invoice_database.db"

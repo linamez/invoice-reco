@@ -1,7 +1,11 @@
+from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
-from src import app
+from invoice_reco import app
 
+
+current_file = Path(__file__)
+fixtures_dir = current_file.parent / "fixtures"
 
 @pytest.fixture
 def test_client() -> TestClient:
@@ -10,7 +14,7 @@ def test_client() -> TestClient:
 
 @pytest.fixture
 def test_invoice() -> bytes:
-    with open("invoice/test_invoice.png", "rb") as invoice_file:
+    with open(fixtures_dir / "test_invoice.png", "rb") as invoice_file:
         return invoice_file.read()
 
 
@@ -21,14 +25,14 @@ def test_not_found_route(test_client: TestClient):
 
 def test_create_file(test_client: TestClient, test_invoice: bytes):
     response = test_client.post(
-        "/uploadfile/", files={"file": ("test_invoice.png", test_invoice)}
+        "/uploadfile/", files={"file": (str(fixtures_dir/"test_invoice.png"), test_invoice)}
     )
     assert response.status_code == 200
 
 
 def test_invoice_reco(test_client: TestClient, test_invoice: bytes):
     response = test_client.post(
-        "/invoice-reco/", files={"file": ("test_invoice.pdf", test_invoice)}
+        "/invoice-reco/", files={"file": (str(fixtures_dir/ "test_invoice.pdf"), test_invoice)}
     )
     assert response.status_code == 200
     invoice_info = response.json()

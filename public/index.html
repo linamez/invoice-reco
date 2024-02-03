@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Upload and Display</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+    <script src="https://unpkg.com/mustache@latest"></script>
+</head>
+<body>
+    <div hx-ext="client-side-templates">
+        <h2>Upload a File</h2>
+        <form id="uploadForm" hx-post="http://localhost:8000/invoice-reco/" hx-encoding="multipart/form-data" hx-target="#response" hx-swap="outerHTML" mustache-template="invoice-template">
+            <input type="file" id="fileInput" name="file" required />
+            <button type="submit">Upload</button>
+        </form>
+        <div id="response"></div>
+
+        <template id="invoice-template">
+            <div>
+                <h3>Invoice Details</h3>
+                <p>Invoice Number: {{invoice_number}}</p>
+                <p>Order Date: {{order_date}}</p>
+                <p>VAT Rate: {{vat_rate}}</p>
+                <p>Total Excluding VAT: {{total_excl_vat}}</p>
+                <p>Total Including VAT: {{total_incl_vat}}</p>
+            </div>
+        </template>
+    </div>
+</body>
+</html>
+

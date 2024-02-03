@@ -1,9 +1,9 @@
 import logging
 import datetime as dt
 from fastapi import APIRouter, UploadFile
-from src import openai
-from src.models import InvoiceInfo
-from src.db import create_db_and_tables, add_invoice_info
+from . import openai
+from .models import InvoiceInfo
+from .db import create_db_and_tables
 
 
 logger = logging.getLogger(__name__)
